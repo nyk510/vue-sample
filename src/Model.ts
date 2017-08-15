@@ -1,3 +1,11 @@
+export interface TodoObject {
+    title: string
+    contents: string
+    responsiblePerson: Person
+    assignedPersons: Array<Person>
+    deadlineDate: string
+}
+
 export class TodoItem {
     public static copy(a: TodoItem, b: TodoItem) {
         b.title = a.title
@@ -13,12 +21,22 @@ export class TodoItem {
     assignedPersons: Array<Person>
     deadlineDate: string
 
-    constructor() {
-        this.title = ""
-        this.contents = ""
-        this.responsiblePerson = null
-        this.assignedPersons = []
-        this.deadlineDate = ""
+    constructor(v: TodoObject)
+    constructor()
+    constructor(v?: TodoObject) {
+        if (v == null) {
+            this.title = ""
+            this.contents = ""
+            this.responsiblePerson = null
+            this.assignedPersons = []
+            this.deadlineDate = ""
+        } else {
+            this.title = v.title
+            this.contents = v.contents
+            this.responsiblePerson = v.responsiblePerson
+            this.assignedPersons = v.assignedPersons
+            this.deadlineDate = v.deadlineDate
+        }
     }
 
     public isValid(): boolean {
