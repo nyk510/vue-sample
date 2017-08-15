@@ -28,24 +28,24 @@
         </div>
         <div class="form-group">
             <label>アサイン</label>
-            <multiselect :options=personList label="name" :multiple="true" v-model="inputed.assignedPersons" @input="onInput">
+            <multiselect :options="personList" :multiple="true" label="name" track-by="id" v-model="inputed.assignedPersons" @input="onInput">
             </multiselect>
         </div>
         <datepicker v-model="inputed.deadlineDate" @input="onInput"></datepicker>
         <div slot="modal-footer" class="modal-footer">
-            {{ inputed }} {{ inputed.isValid() }} {{ title }}
             <button class="btn btn-default" @click="onSave" :class="saveButtonClass" :disabled="!isValid">保存</button>
         </div>
     </modal>
 </template>
 
 <script lang="ts">
-require('vue-multiselect/dist/vue-multiselect.min.css')
 import Vue from "vue"
 import Component from "vue-class-component"
-const multiselect = require('vue-multiselect').Multiselect
 import { modal, datepicker } from 'vue-strap'
 import { TodoItem, OneItem, Manager } from './Model'
+
+require('vue-multiselect/dist/vue-multiselect.min.css')
+const multiselect = require('vue-multiselect').Multiselect
 
 @Component({
     components: { modal, datepicker, multiselect },
@@ -107,6 +107,7 @@ export default class EditEvent extends Vue {
         let pushItem = new TodoItem()
         TodoItem.copy(this.inputed, pushItem)
         this.$emit("ok", pushItem)
+        this.isValid = false
 
         if (this.default == null) {
             console.log("リセットするよー")
