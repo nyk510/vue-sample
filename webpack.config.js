@@ -1,7 +1,7 @@
 const ExtraTextPlugin = require('extract-text-webpack-plugin')
 const webpack = require("webpack")
-var HtmlWebpackPlugin = require("html-webpack-plugin")
 
+// 多言語化対応のためのプラグイン
 var I18nPlugin = require('i18n-webpack-plugin')
 var languages = {
     "ja": {
@@ -14,12 +14,17 @@ var languages = {
     }
 }
 
-var extext = new ExtraTextPlugin("./css/[name].css")
-
+// map を使って languages の各キーに対して設定ファイルを return する. 
 module.exports = Object.keys(languages).map(function (lang_i) {
     return {
         entry: {
-            'main': './src/main.ts'
+            // bundleを行うエントリファイルの指定
+            // keyの値が name に代入される
+
+            // 'care3': './src/care3.ts',
+            // 'care2': './src/care2.ts',
+            'todo': './src/ToDo.ts',
+            // 'carepanel': './src/CarePanel.ts',
         },
         output: {
             path: __dirname,
@@ -28,37 +33,45 @@ module.exports = Object.keys(languages).map(function (lang_i) {
         devtool: 'source-map',
         resolve: {
             modules: ['#{__dirname}/dist/', "node_modules"],
-            extensions: ['*', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+            extensions: ['*', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.vue'],
             alias: {
                 // import Vue from 'vue' の記法を有効にするため
                 'vue$': 'vue/dist/vue.esm.js'
             }
         },
         module: {
-            // rules を用いて記述するのは webpack2 より. 
-            // loader で指定する方法は推奨されていない. 
+            // module の指定の仕方は検索すると色々と出て来るが
+            // webpack2 からは rules を用いて記述することが推奨されている. 
             // https://webpack.js.org/guides/migrating/
             rules: [
                 {
                     // .ts 読み込み
                     test: /\.ts$/,
-                    loader: 'ts-loader'
+                    exclude: /node_modules|vue\/src/,
+                    loader: 'ts-loader',
+                    options: {
+                        // .vue ファイルの中で記述されている typescript のコンパイルをさせる設定
+                        appendTsSuffixTo: [/\.vue$/]
+                    }
                 },
                 {
                     // .css 読み込み
                     test: /\.css$/,
-                    use: extext.extract({
-                        fallback: "style-loader",
-                        use: "css-loader",
-                        publicPath: "/dist"
-                    })
+                    use: [
+                        {
+                            loader: 'style-loader'
+                        },
+                        {
+                            loader: 'css-loader'
+                        }
+                    ]
                 },
-                // .vue 読み込み
                 {
+                    // .vue 読み込み
                     test: /\.vue$/,
                     loader: 'vue-loader',
                     options: {
-                        esModule: true
+                        esModule: true,
                     }
                 },
                 {
@@ -90,25 +103,17 @@ module.exports = Object.keys(languages).map(function (lang_i) {
             new I18nPlugin(
                 languages[lang_i]['data']
             ),
-            extext,
+
             // jsファイルの圧縮
+            // 普通に開発しているときは時間がかかるのでコメントアウトしてる            
             // new webpack.optimize.UglifyJsPlugin({
             //     compress: {
             //         warnings: false
             //     }
             // }),
+
             // // cssファイルの圧縮
             new webpack.LoaderOptionsPlugin({ minimize: true }),
-
-            // HtmlWebpackPlugin
-            //     読みこんだすべてのファイルが読み込まれた雛形のhtmlを出力するプラグイン
-
-            // new HtmlWebpackPlugin({
-            //     inject: false,
-            //     chunks: ["assessment"],
-            //     filename: __dirname + "/assessment.html", 
-            //     inject: "body",
-            // })
         ]
     }
 })

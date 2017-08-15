@@ -41,7 +41,7 @@ gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
             baseDir: [htmlRootPath],
-            index: 'careplan2.html'
+            index: 'todo.html'
         },
         files: [
             htmlRootPath + '/**/*'
@@ -52,7 +52,7 @@ gulp.task('browser-sync', function () {
 gulp.task('watch', function () {
     gulp.watch(
         // 第一引数が watch するファイル, 第二引数が実行するタスク
-        ['./src/**/*.ts', './src/**/*.js', './src/view/template/*.html'], [buildTaskNames[0]]
+        ['./src/**/*.ts', './src/**/*.js', './src/view/template/*.html', './src/**/*.vue'], [buildTaskNames[0]]
     )
 })
 

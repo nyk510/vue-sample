@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es6",
+        "target": "es5",
         "noImplicitAny": true,
         "sourceMap": true,
         "allowSyntheticDefaultImports": true, // vue.js
@@ -14,7 +14,7 @@
         ]
     },
     "include": [
-        "src/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules/"
