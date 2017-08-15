@@ -1,16 +1,29 @@
 <template>
     <div class="row">
-        <button class="btn btn-default" @click="isShowAdd = true">新規作成</button>
-        <div class="checkbox">
-            <label>未来のタスクのみ<input type="checkbox" v-model="showOnlyAfterNow"></label>
-        </div>
-        <div class="checkbox">
-            <label>日付けでソート<input type="checkbox" v-model="sortDate"></label>
-        </div>
         <edit-event :is-show="isShowAdd" @ok="onAdd" header="新規作成" @cancel="isShowAdd = false">
         </edit-event>
-        <panel-item v-for="(item, key) in Items" :key="key" :item="item" @update="onUpdate" @delete="onDelete">
-        </panel-item>
+        <button class="btn btn-default" @click="isShowAdd = true">新規作成</button>
+        <div class="row">
+            <div>
+                <h4>表示オプション</h4>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" v-model="showOnlyAfterNow"> 未来のタスクのみ
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label for="sort-day">
+                        <input type="checkbox" v-model="sortDate"> 日付けでソート
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <panel-item v-for="(item, key) in Items" :key="key" :item="item" @update="onUpdate" @delete="onDelete">
+            </panel-item>
+        </div>
     </div>
 </template>
 
