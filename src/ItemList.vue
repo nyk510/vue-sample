@@ -9,13 +9,13 @@
             </div>
             <div class="form-group">
                 <div class="checkbox">
-                    <label>
-                        <input type="checkbox" v-model="showOnlyAfterNow"> 未来のタスクのみ
+                    <label for="only-future">
+                        <input type="checkbox" v-model="showOnlyAfterNow" id="only-future"> 未来のタスクのみ
                     </label>
                 </div>
                 <div class="checkbox">
                     <label for="sort-day">
-                        <input type="checkbox" v-model="sortDate"> 日付けでソート
+                        <input type="checkbox" v-model="sortDate" id="sort-day">日付けでソート
                     </label>
                 </div>
             </div>
@@ -46,8 +46,8 @@ export default class ItemList extends Vue {
     todoItems: Array<TodoItem> = []
     isShowAdd: boolean = false
 
-    showOnlyAfterNow: boolean = true
-    sortDate: boolean = true
+    showOnlyAfterNow: boolean = false
+    sortDate: boolean = false
 
     onEdit(key: number) {
         console.log("編集ボタンがおされた", key)
@@ -67,8 +67,12 @@ export default class ItemList extends Vue {
     }
 
     onUpdate(oldItem: TodoItem, newItem: TodoItem) {
-        this.onDelete(oldItem)
-        this.onAdd(newItem)
+        let idx = this.todoItems.indexOf(oldItem)
+        if (idx > -1) {
+            TodoItem.copy(newItem, oldItem)
+        } else {
+            console.warn("昔のデータが見つからない！")
+        }
     }
 
     get Items() {

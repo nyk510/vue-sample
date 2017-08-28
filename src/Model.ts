@@ -1,4 +1,5 @@
 export interface TodoObject {
+    isCompleted: boolean
     title: string
     contents: string
     responsiblePerson: Person
@@ -8,6 +9,7 @@ export interface TodoObject {
 
 export class TodoItem {
     public static copy(a: TodoItem, b: TodoItem) {
+        b.isCompleted = a.isCompleted
         b.title = a.title
         b.contents = a.contents
         b.responsiblePerson = a.responsiblePerson
@@ -16,6 +18,7 @@ export class TodoItem {
     }
 
     title: string
+    isCompleted: boolean
     contents: string
     responsiblePerson: Person
     assignedPersons: Array<Person>
@@ -25,12 +28,14 @@ export class TodoItem {
     constructor()
     constructor(v?: TodoObject) {
         if (v == null) {
+            this.isCompleted = false
             this.title = ""
             this.contents = ""
             this.responsiblePerson = null
             this.assignedPersons = []
             this.deadlineDate = ""
         } else {
+            this.isCompleted = v.isCompleted
             this.title = v.title
             this.contents = v.contents
             this.responsiblePerson = v.responsiblePerson
@@ -70,10 +75,11 @@ export class Manager {
     static persons: Array<OneItem>
     static initialize() {
         this.persons = []
-        this.persons.push(new Person("次郎", 1))
-        this.persons.push(new Person("太郎", 2))
+        this.persons.push(new Person("羽生善治", 1))
+        this.persons.push(new Person("廣瀬純", 2))
         this.persons.push(new Person("イチロー", 3))
         this.persons.push(new Person("新井貴浩", 4))
+        this.persons.push(new Person("藤井猛", 5))
     }
 }
 Manager.initialize()

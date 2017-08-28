@@ -7,23 +7,18 @@
             <label>
                 タイトル
             </label>
-            <input type="text" class="form-control" v-model="inputed.title" placeholder="タイトル" @input="onInput">
+            <input type="text" class="form-control" v-model="inputed.title" placeholder="終盤戦" @input="onInput">
         </div>
         <div class="form-group">
             <label>
                 内容
             </label>
-            <textarea class="form-control" placeholder="明日までに詰将棋やること" rows="3" v-model="inputed.contents" @input="onInput"></textarea>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox">Done
-            </label>
+            <textarea class="form-control" placeholder="終盤戦を見据えて練習。明日までに詰将棋やること" rows="3" v-model="inputed.contents" @input="onInput"></textarea>
         </div>
         <div class="form-group">
             <label>責任者</label>
-            <select class="form-control" v-model="inputed.responsiblePerson" @input="onInput">
-                <option v-for="(item, key) in personList" :key="key"> {{ item.name }}</option>
+            <select class="form-control" v-model="inputed.responsiblePerson" @change="onInput">
+                <option v-for="(item, key) in personList" :key="key" :value="item"> {{ item.name }} </option>
             </select>
         </div>
         <div class="form-group">
@@ -31,12 +26,19 @@
             <multiselect :options="personList" :multiple="true" label="name" track-by="id" v-model="inputed.assignedPersons" @input="onInput">
             </multiselect>
         </div>
-        <datepicker v-model="inputed.deadlineDate" @input="onInput"></datepicker>
+        <div class="form-group">
+            <label>締め切り</label>
+            <datepicker v-model="inputed.deadlineDate" @input="onInput" format="yyyy/MM/dd"></datepicker>
+        </div>
+        <div class="form-group">
+            <label>完了済</label>
+            <input type="checkbox" v-model="inputed.isCompleted" @change="onInput">
+        </div>
         <div slot="modal-footer" class="modal-footer">
             <button class="btn btn-default" @click="onSave" :class="saveButtonClass" :disabled="!isValid">保存</button>
         </div>
     </modal>
-</template>
+</template> 
 
 <script lang="ts">
 import Vue from "vue"
@@ -71,7 +73,7 @@ export default class EditEvent extends Vue {
     title: string
     personList = Manager.persons
 
-    debug(e: any){
+    debug(e: any) {
         console.log(e)
     }
 
@@ -107,7 +109,6 @@ export default class EditEvent extends Vue {
         let pushItem = new TodoItem()
         TodoItem.copy(this.inputed, pushItem)
         this.$emit("ok", pushItem)
-        this.isValid = false
 
         if (this.default == null) {
             console.log("リセットするよー")
