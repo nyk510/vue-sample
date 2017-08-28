@@ -6,6 +6,7 @@
             <div class="panel-body">
                 <h3>
                     {{ item.title }}
+                    <span class="label label-primary" v-if="item.isCompleted">済</span>
                 </h3>
                 <div>
                     Assigned:
@@ -21,8 +22,8 @@
                         </p>
                     </section>
                     <section>
-                        <h4>締め切り： {{ item.deadlineDate }}
-                            <span class="label label-danger" v-if="isOver"> Overed </span>
+                        <h4>締め切り: {{ item.deadlineDate }}
+                            <span class="label label-danger" v-if="isOver"> 期限過 </span>
                         </h4>
                     </section>
                 </div>
@@ -70,17 +71,23 @@ export default class PanelItem extends Vue {
     }
 
     onDelete() {
-        this.$emit("delete", this.item)
         this.isShowDelete = false
+        this.$emit("delete", this.item)
     }
 
     get isOver() {
-        let d = new Date(this.item.deadlineDate)
-        if (d.getTime() > this.nowDate.getTime()) {
+        if (this.item.isCompleted) {
             return false
-        } else {
+        }
+
+        let d = new Date(this.item.deadlineDate)
+        let isOverDate = d.getTime() < this.nowDate.getTime()
+        console.log(isOverDate, "isoverdate")
+
+        if (isOverDate) {
             return true
         }
+        return false
     }
 }
 </script>
