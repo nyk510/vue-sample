@@ -8,6 +8,7 @@ export interface TodoObject {
 }
 
 export class TodoItem {
+    static counter: number = 0
     public static copy(a: TodoItem, b: TodoItem) {
         b.isCompleted = a.isCompleted
         b.title = a.title
@@ -17,6 +18,7 @@ export class TodoItem {
         b.deadlineDate = a.deadlineDate
     }
 
+    id: number
     title: string
     isCompleted: boolean
     contents: string
@@ -42,6 +44,8 @@ export class TodoItem {
             this.assignedPersons = v.assignedPersons
             this.deadlineDate = v.deadlineDate
         }
+        this.id = TodoItem.counter
+        TodoItem.counter += 1
     }
 
     public isValid(): boolean {
@@ -76,10 +80,9 @@ export class Manager {
     static initialize() {
         this.persons = []
         this.persons.push(new Person("羽生善治", 1))
-        this.persons.push(new Person("廣瀬純", 2))
-        this.persons.push(new Person("イチロー", 3))
-        this.persons.push(new Person("新井貴浩", 4))
+        this.persons.push(new Person("新井貴浩", 3))
         this.persons.push(new Person("藤井猛", 5))
+        this.persons.push(new Person("藤井聡", 4))
     }
 }
 Manager.initialize()

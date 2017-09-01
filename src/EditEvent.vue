@@ -15,6 +15,11 @@
             </label>
             <textarea class="form-control" placeholder="終盤戦を見据えて練習。明日までに詰将棋やること" rows="3" v-model="inputed.contents" @input="onInput"></textarea>
         </div>
+        <hr />
+        <div class="form-group">
+            <label>締め切り</label>
+            <datepicker v-model="inputed.deadlineDate" @input="onInput" format="yyyy/MM/dd"></datepicker>
+        </div>
         <div class="form-group">
             <label>責任者</label>
             <select class="form-control" v-model="inputed.responsiblePerson" @change="onInput">
@@ -25,10 +30,6 @@
             <label>アサイン</label>
             <multiselect :options="personList" :multiple="true" label="name" track-by="id" v-model="inputed.assignedPersons" @input="onInput">
             </multiselect>
-        </div>
-        <div class="form-group">
-            <label>締め切り</label>
-            <datepicker v-model="inputed.deadlineDate" @input="onInput" format="yyyy/MM/dd"></datepicker>
         </div>
         <div class="form-group">
             <label>完了済</label>

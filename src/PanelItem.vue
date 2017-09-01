@@ -9,28 +9,29 @@
                     <span class="label label-primary" v-if="item.isCompleted">済</span>
                 </h3>
                 <div>
+                    <p>
                     Assigned:
                     <span class="label label-default" v-for="(person, key) in item.assignedPersons" :key="key">
                         {{ person.name }}
                     </span>
+                    </p>
                 </div>
                 <div>
                     <section>
-                        <h4>内容</h4>
                         <p>
                             {{ item.contents }}
                         </p>
-                    </section>
-                    <section>
-                        <h4>締め切り: {{ item.deadlineDate }}
-                            <span class="label label-danger" v-if="isOver"> 期限過 </span>
-                        </h4>
+                        <p>{{ $t("deadline") }} : {{ item.deadlineDate }}
+                            <span class="label label-danger" v-if="isOver">期限過</span>
+                        </p>
                     </section>
                 </div>
             </div>
             <div class="panel-footer">
-                <button class="btn btn-default" @click="isShowEdit = true">編集</button>
-                <button class="btn btn-default" @click="isShowDelete = true">削除</button>
+                <div class="btn-group">
+                    <button class="btn btn-default" @click="isShowEdit = true">{{ $t("edit") }}</button>
+                    <button class="btn btn-default" @click="isShowDelete = true">{{ $t("delete") }}</button>
+                </div>
             </div>
         </div>
         <modal v-model="isShowDelete" @ok="onDelete" title="削除" cancel-text="キャンセル" ok-text="削除">
@@ -43,13 +44,28 @@
         </modal>
     </div>
 </template>
-
+<i18n>
+{
+    "en": {
+        "edit": "Edit",
+        "delete": "Delete"
+    },
+    "ja": {
+        "edit": "編集",
+        "delete": "削除"
+    }
+}
+</i18n>
 <script lang="ts">
 import Vue from "vue"
 import Component from "vue-class-component"
 import EditEvent from './EditEvent.vue'
 import { modal } from 'vue-strap'
 import { TodoItem } from './Model'
+
+Vue.filter("toMarkdown", function(s: string) {
+    return marked(s)
+})
 
 @Component({
     components: {
@@ -60,6 +76,12 @@ import { TodoItem } from './Model'
     }
 })
 export default class PanelItem extends Vue {
+    i18n: {
+        messages: {
+            en: { message: "Edit" },
+            ja: { message: "編集" }
+        }
+    }
     isShowEdit: boolean = false
     isShowDelete: boolean = false
     item: TodoItem
