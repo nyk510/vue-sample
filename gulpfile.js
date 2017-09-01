@@ -21,12 +21,6 @@ webpackConfig.map(function (config, i) {
   })
 })
 
-
-// gulp.task(buildTaskNames[0], function () {
-//   return webpackStream(webpackConfig[0], webpack)
-//     .pipe(gulp.dest(jsRootPath));
-// })
-
 var browserSync = require('browser-sync').create();
 // web-browser の自動更新のタスク設定
 gulp.task('browser-sync', function () {
