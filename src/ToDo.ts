@@ -23,7 +23,7 @@ let v2: TodoObject = {
     isCompleted: false,
     title: "買い出し",
     contents: "ひときれのパン ナイフ ランプ,",
-    assignedPersons: [persons[0]],
+    assignedPersons: [persons[0], persons[3]],
     responsiblePerson: persons[3],
     deadlineDate: "2017/3/2"
 }
